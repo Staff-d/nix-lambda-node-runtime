@@ -60,28 +60,33 @@ in
         else "no-rie"
       )
     ];
-    #    name = "nodetest";
     tag = "latest";
 
     copyToRoot = pkgs.buildEnv {
       name = "image-root";
-      paths = [
-        lambdaRic
-        handler
-        (pkgs.lib.optional
-          addLambdaRie
-          pkgs.aws-lambda-rie)
-      ];
+      paths =
+        [
+          lambdaRic
+          handler
+        ]
+        ++ (
+          if addLambdaRie
+          then [pkgs.aws-lambda-rie]
+          else []
+        );
       pathsToLink = ["/bin"];
     };
 
     config = {
-      Cmd = [
-        (pkgs.lib.optionalString
-          addLambdaRie
-          "/bin/aws-lambda-rie")
-        "/bin/aws-lambda-ric"
-        "${handler}/lib/handler.handler"
-      ];
+      Cmd =
+        (
+          if addLambdaRie
+          then ["/bin/aws-lambda-rie"]
+          else []
+        )
+        ++ [
+          "/bin/aws-lambda-ric"
+          "${handler}/lib/handler.handler"
+        ];
     };
   }
