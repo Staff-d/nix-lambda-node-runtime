@@ -54,5 +54,5 @@ $ nix flake show
         └───slim_no-intl_no-locales_rie: package 'docker-image-node_slim_no-intl_no-locales_rie.tar.gz'
 ```
 
-For example, use `nix build .#slim_intl_locales_rie` to build the container using the `slim` Node.js package, 
+For example, use `nix build .#slim_intl_locales_rie` to build the image using the `slim` Node.js package, 
 with `Intl` support, locales and local execution support.
